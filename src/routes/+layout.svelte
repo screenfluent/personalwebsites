@@ -1,7 +1,17 @@
 <script lang="ts">
 	import '../app.css';
+	import { page } from '$app/stores';
+	
 	let { children } = $props();
+	
+	const baseUrl = 'https://personalwebsites.org';
+	
+	const canonicalUrl = $derived(`${baseUrl}${$page.url.pathname}`);
 </script>
+
+<svelte:head>
+	<link rel="canonical" href={canonicalUrl} />
+</svelte:head>
 
 <div class="min-h-screen flex flex-col">
 	<header class="border-b">
