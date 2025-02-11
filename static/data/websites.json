@@ -2,7 +2,7 @@
   "websites": [
     {
       "name": "nemo",
-      "avatar": "/avatars/nemo.jpg",
+      "avatar": "/avatars/nemo-foo.png",
       "url": "https://nemo.foo/",
       "country": {
         "code": "EARTH",
