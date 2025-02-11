@@ -12,7 +12,7 @@ To add your website to the directory:
 
 1. Fork this repository
 2. Add your website screenshot to the `static/screenshots/` directory
-   - Screenshot should be 2880 × 1800 pixels
+   - Screenshot should be 1440 × 900 pixels
    - Name the file using your domain name (e.g., `example-com.jpg`)
    - PNG or JPG formats accepted
 3. Add your website entry to `data/websites.json`

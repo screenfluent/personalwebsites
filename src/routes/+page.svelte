@@ -33,7 +33,7 @@
 						href={website.url}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border"
+						class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border-gray-100 border"
 					>
 						<div class="relative pb-[62.5%] overflow-hidden bg-gray-100">
 							<img 
