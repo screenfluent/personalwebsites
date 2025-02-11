@@ -1,29 +1,17 @@
 <script lang="ts">
 	import type { WebsitesData, WipResponse } from '$lib/types';
-	import { getProjectTodos } from '$lib/wip';
 	
 	let websitesData = $state<WebsitesData | null>(null);
 	let selectedImage: string | null = $state(null);
-	let todos = $state<WipResponse | null>(null);
-	let error = $state<string | null>(null);
+	let { data } = $props();
 	
 	async function loadWebsites() {
 		const response = await fetch('/data/websites.json');
 		websitesData = await response.json();
 	}
-
-	async function loadTodos() {
-		try {
-			todos = await getProjectTodos('personalwebsites');
-		} catch (e) {
-			error = 'Failed to load todos';
-			console.error(e);
-		}
-	}
 	
 	$effect(() => {
 		loadWebsites();
-		loadTodos();
 	});
 
 	function getImagePaths(screenshot: string) {
@@ -197,11 +185,11 @@
 	<section class="py-16 max-w-3xl mx-auto">
 		<h2 class="text-3xl font-bold mb-6 text-center">#buildinpublic</h2>
 		<div class="prose prose-lg mx-auto">
-			{#if error}
-				<p class="text-red-600 text-center">{error}</p>
-			{:else if todos}
+			{#if data.error}
+				<p class="text-red-600 text-center">{data.error}</p>
+			{:else if data.todos}
 				<ul class="space-y-4">
-					{#each todos.data as todo}
+					{#each data.todos.data as todo}
 						<li class="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-200">
 							<div class="min-w-0 flex-1">
 								<p class="text-gray-900">{todo.body}</p>
