@@ -13,9 +13,16 @@
 		loadWebsites();
 	});
 
-	function getThumbnailPath(screenshot: string) {
-		const baseName = screenshot.split('/').pop()?.split('.')[0];
-		return `/screenshots/thumbnails/${baseName}.jpeg`;
+	function getImagePaths(screenshot: string) {
+		// Remove leading slash if present and file extension
+		const cleanPath = screenshot.replace(/^\//, '').replace(/\.(jpeg|jpg|png|webp)$/, '');
+		
+		return {
+			webp: `/${cleanPath}.webp`,
+			jpeg: `/${cleanPath}.jpeg`,
+			thumbWebp: `/${cleanPath.replace('screenshots/', 'screenshots/thumbnails/')}.webp`,
+			thumbJpeg: `/${cleanPath.replace('screenshots/', 'screenshots/thumbnails/')}.jpeg`
+		};
 	}
 </script>
 
@@ -35,34 +42,43 @@
 		{#if websitesData}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 				{#each websitesData.websites as website}
-					<a 
-						href={website.url}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="block bg-white rounded-lg hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-shadow duration-200 overflow-hidden border-gray-200 border"
-					>
-						<div class="relative pb-[62.5%] overflow-hidden bg-gray-100">
-							<img 
-								src={getThumbnailPath(website.screenshot)} 
-								alt={`Screenshot of ${website.name}'s website`}
-								class="absolute inset-0 w-full h-full object-cover"
-								onclick={(e) => {
-									e.preventDefault();
-									e.stopPropagation();
-									selectedImage = website.screenshot;
-								}}
-							/>
-						</div>
-						<div class="p-4">
-							<div class="flex items-center justify-between mb-2">
-								<h2 class="font-semibold truncate">{website.name}</h2>
-								<span class="text-xl">{website.country.flag}</span>
+					{#snippet card()}
+						{@const paths = getImagePaths(website.screenshot)}
+						<a 
+							href={website.url}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="block bg-white rounded-lg hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-shadow duration-200 overflow-hidden border-gray-200 border"
+						>
+							<div class="relative pb-[62.5%] overflow-hidden bg-gray-100">
+								<picture 
+									class="absolute inset-0 w-full h-full"
+									onclick={(e) => {
+										e.preventDefault();
+										e.stopPropagation();
+										selectedImage = website.screenshot;
+									}}
+								>
+									<source srcset={paths.thumbWebp} type="image/webp" />
+									<img 
+										src={paths.thumbJpeg}
+										alt={`Screenshot of ${website.name}'s website`}
+										class="w-full h-full object-cover"
+									/>
+								</picture>
 							</div>
-							<p class="text-sm text-gray-600 truncate">
-								{website.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-							</p>
-						</div>
-					</a>
+							<div class="p-4">
+								<div class="flex items-center justify-between mb-2">
+									<h2 class="font-semibold truncate">{website.name}</h2>
+									<span class="text-xl">{website.country.flag}</span>
+								</div>
+								<p class="text-sm text-gray-600 truncate">
+									{website.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+								</p>
+							</div>
+						</a>
+					{/snippet}
+					{@render card()}
 				{/each}
 			</div>
 		{:else}
@@ -89,14 +105,21 @@
 </div>
 
 {#if selectedImage}
-	<div 
-		class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-		onclick={() => selectedImage = null}
-	>
-		<img 
-			src={selectedImage} 
-			alt="Full-size screenshot" 
-			class="max-w-full max-h-[90vh] object-contain"
-		/>
-	</div>
+	{#snippet modal()}
+		{@const paths = getImagePaths(selectedImage as string)}
+		<div 
+			class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+			onclick={() => selectedImage = null}
+		>
+			<picture>
+				<source srcset={paths.webp} type="image/webp" />
+				<img 
+					src={paths.jpeg}
+					alt="Full-size screenshot" 
+					class="max-w-full max-h-[90vh] object-contain"
+				/>
+			</picture>
+		</div>
+	{/snippet}
+	{@render modal()}
 {/if}

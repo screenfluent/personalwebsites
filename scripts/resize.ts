@@ -22,11 +22,37 @@ async function resizeImages() {
     
     for (const file of files) {
       if (file.match(/\.(jpg|jpeg|png)$/i)) {
-        const baseName = file.split('.')[0];
+        // Keep the full domain name by removing only the extension
+        const fullDomainName = file.replace(/\.(jpg|jpeg|png)$/i, '');
         console.log(`Processing ${file}...`);
         
         // Create full-size version
         const sourceFile = await Bun.file(join(sourceDir, file)).arrayBuffer();
+        
+        // Create WebP versions
+        await sharp(sourceFile)
+          .resize(FULL_WIDTH, FULL_HEIGHT, {
+            fit: 'cover',
+            position: 'top'
+          })
+          .webp({ 
+            quality: 85,
+            effort: 6  // Higher effort = better compression but slower
+          })
+          .toFile(join(outputDir, `${fullDomainName}.webp`));
+
+        await sharp(sourceFile)
+          .resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, {
+            fit: 'cover',
+            position: 'top'
+          })
+          .webp({ 
+            quality: 80,
+            effort: 6
+          })
+          .toFile(join(thumbnailsDir, `${fullDomainName}.webp`));
+
+        // Create JPEG fallback versions
         await sharp(sourceFile)
           .resize(FULL_WIDTH, FULL_HEIGHT, {
             fit: 'cover',
@@ -36,29 +62,28 @@ async function resizeImages() {
             quality: 85,
             mozjpeg: true
           })
-          .toFile(join(outputDir, `${baseName}.jpeg`));
+          .toFile(join(outputDir, `${fullDomainName}.jpeg`));
 
-        // Create thumbnail version
         await sharp(sourceFile)
           .resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, {
             fit: 'cover',
             position: 'top'
           })
           .jpeg({ 
-            quality: 80,  // Slightly more compressed for thumbnails
+            quality: 80,
             mozjpeg: true
           })
-          .toFile(join(thumbnailsDir, `${baseName}.jpeg`));
+          .toFile(join(thumbnailsDir, `${fullDomainName}.jpeg`));
 
-        const fullStats = await sharp(join(outputDir, `${baseName}.jpeg`)).metadata();
-        const thumbStats = await sharp(join(thumbnailsDir, `${baseName}.jpeg`)).metadata();
+        const webpStats = await sharp(join(outputDir, `${fullDomainName}.webp`)).metadata();
+        const jpegStats = await sharp(join(outputDir, `${fullDomainName}.jpeg`)).metadata();
         
-        console.log(`  Full size: ${((fullStats.size || 0) / 1024).toFixed(1)}KB`);
-        console.log(`  Thumbnail: ${((thumbStats.size || 0) / 1024).toFixed(1)}KB`);
+        console.log(`  WebP size: ${((webpStats.size || 0) / 1024).toFixed(1)}KB`);
+        console.log(`  JPEG size: ${((jpegStats.size || 0) / 1024).toFixed(1)}KB`);
       }
     }
     
-    console.log('✨ All done! Screenshots and thumbnails created and optimized.');
+    console.log('✨ All done! Screenshots and thumbnails created in both WebP and JPEG formats.');
   } catch (err) {
     console.error('Error:', err);
   }
