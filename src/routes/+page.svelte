@@ -55,7 +55,7 @@
 </script>
 
 <div class="container mx-auto px-4">
-	<!-- Hero Section -->
+	<!-- Temporarily commented out
 	<section class="py-20 text-center">
 		<h1 class="text-4xl md:text-5xl font-bold mb-4">
 			Personal Websites
@@ -64,6 +64,7 @@
 			A curated list of personal websites from around the world.
 		</p>
 	</section>
+	-->
 
 	<!-- Grid Section -->
 	<section class="py-12">
