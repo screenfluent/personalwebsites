@@ -1,12 +1,39 @@
 <script lang="ts">
 	import '../app.css';
 	import { page } from '$app/stores';
+	import { browser } from '$app/environment';
 	
 	let { children } = $props();
 	
 	const baseUrl = 'https://personalwebsites.org';
-	
 	const canonicalUrl = $derived(`${baseUrl}${$page.url.pathname}`);
+
+	$effect(() => {
+		if (browser) {
+			console.log('Checking for Stonks analytics...');
+			const checkAnalytics = setInterval(() => {
+				console.log('$stonks object:', window.$stonks);
+				if (window.$stonks) {
+					const data = {
+						path: $page.url.pathname,
+						title: document.title
+					};
+					console.log('Tracking page view with data:', data);
+					window.$stonks.track('page_view', data);
+					clearInterval(checkAnalytics);
+					console.log('Successfully initialized Stonks analytics');
+				}
+			}, 100);
+
+			// Clear interval after 5 seconds if analytics doesn't load
+			setTimeout(() => {
+				clearInterval(checkAnalytics);
+				if (!window.$stonks) {
+					console.error('Failed to load Stonks analytics after 5 seconds');
+				}
+			}, 5000);
+		}
+	});
 </script>
 
 <svelte:head>
