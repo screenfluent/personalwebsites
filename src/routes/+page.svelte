@@ -64,7 +64,7 @@
 			Personal Websites
 		</h1>
 		<p class="text-xl text-gray-600 max-w-2xl mx-auto">
-			A curated list of personal websites from around the world.
+			A curated gallery of personal websites around the world
 		</p>
 	</section>
 
