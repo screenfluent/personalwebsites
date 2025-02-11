@@ -24,6 +24,12 @@
 			thumbJpeg: `/${cleanPath.replace('screenshots/', 'screenshots/thumbnails/')}.jpeg`
 		};
 	}
+
+	function getRefUrl(url: string) {
+		const refUrl = new URL(url);
+		refUrl.searchParams.set('ref', 'personalwebsites.org');
+		return refUrl.toString();
+	}
 </script>
 
 <div class="container mx-auto px-4">
@@ -45,7 +51,7 @@
 					{#snippet card()}
 						{@const paths = getImagePaths(website.screenshot)}
 						<a 
-							href={website.url}
+							href={getRefUrl(website.url)}
 							target="_blank"
 							rel="noopener noreferrer"
 							class="block bg-white rounded-lg hover:shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] transition-shadow duration-200 overflow-hidden border-gray-200 border"
