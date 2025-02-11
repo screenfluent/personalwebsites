@@ -9,7 +9,7 @@
 			<nav class="flex justify-between items-center">
 				<a href="/" class="text-xl font-bold">Personal Websites</a>
 				<a 
-					href="https://github.com/yourusername/personalwebsites.org" 
+					href="https://github.com/screenfluent/personalwebsites" 
 					target="_blank" 
 					rel="noopener noreferrer"
 					class="text-gray-600 hover:text-gray-900"
@@ -30,7 +30,7 @@
 				<p>© {new Date().getFullYear()} Personal Websites Directory</p>
 				<p class="mt-2">
 					<a 
-						href="https://github.com/yourusername/personalwebsites.org" 
+						href="https://github.com/screenfluent/personalwebsites" 
 						target="_blank" 
 						rel="noopener noreferrer"
 						class="hover:text-gray-900"
