@@ -59,16 +59,14 @@
 </script>
 
 <div class="container mx-auto px-4">
-	<!-- Temporarily commented out hero section
 	<section class="py-20 text-center">
 		<h1 class="text-4xl md:text-5xl font-bold mb-4">
-			Personal Websites Gallery
+			Personal Websites
 		</h1>
 		<p class="text-xl text-gray-600 max-w-2xl mx-auto">
 			A curated list of personal websites from around the world.
 		</p>
 	</section>
-	-->
 
 	<!-- Grid Section -->
 	<section class="py-12">
