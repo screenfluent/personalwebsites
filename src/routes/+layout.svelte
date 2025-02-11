@@ -8,36 +8,17 @@
 	const baseUrl = 'https://personalwebsites.org';
 	const canonicalUrl = $derived(`${baseUrl}${$page.url.pathname}`);
 
-	$effect(() => {
-		if (browser) {
-			console.log('Checking for Stonks analytics...');
-			const checkAnalytics = setInterval(() => {
-				console.log('$stonks object:', window.$stonks);
-				if (window.$stonks) {
-					const data = {
-						path: $page.url.pathname,
-						title: document.title
-					};
-					console.log('Tracking page view with data:', data);
-					window.$stonks.track('page_view', data);
-					clearInterval(checkAnalytics);
-					console.log('Successfully initialized Stonks analytics');
-				}
-			}, 100);
-
-			// Clear interval after 5 seconds if analytics doesn't load
-			setTimeout(() => {
-				clearInterval(checkAnalytics);
-				if (!window.$stonks) {
-					console.error('Failed to load Stonks analytics after 5 seconds');
-				}
-			}, 5000);
-		}
-	});
+	// The script automatically tracks page views, no manual initialization needed
 </script>
 
 <svelte:head>
 	<link rel="canonical" href={canonicalUrl} />
+	<script 
+		defer 
+		src="https://assets.onedollarstats.com/stonks.js" 
+		id="stonks"
+		data-allow-localhost="true">
+	</script>
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
