@@ -30,6 +30,28 @@
 		refUrl.searchParams.set('ref', 'personalwebsites.org');
 		return refUrl.toString();
 	}
+
+	function handleImageClick(screenshot: string, e?: Event) {
+		if (e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		selectedImage = screenshot;
+	}
+
+	function handleKeydown(screenshot: string, e: KeyboardEvent) {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			handleImageClick(screenshot);
+		}
+	}
+
+	function handleModalClose(e?: Event) {
+		if (e) {
+			e.preventDefault();
+		}
+		selectedImage = null;
+	}
 </script>
 
 <div class="container mx-auto px-4">
@@ -59,11 +81,10 @@
 							<div class="relative pb-[62.5%] overflow-hidden bg-gray-100">
 								<picture 
 									class="absolute inset-0 w-full h-full"
-									onclick={(e) => {
-										e.preventDefault();
-										e.stopPropagation();
-										selectedImage = website.screenshot;
-									}}
+									role="button"
+									tabindex="0"
+									onclick={(e) => handleImageClick(website.screenshot, e)}
+									onkeydown={(e) => handleKeydown(website.screenshot, e)}
 								>
 									<source srcset={paths.thumbWebp} type="image/webp" />
 									<img 
@@ -115,16 +136,26 @@
 		{@const paths = getImagePaths(selectedImage as string)}
 		<div 
 			class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
-			onclick={() => selectedImage = null}
+			role="dialog"
+			aria-modal="true"
+			aria-label="Image preview"
 		>
-			<picture>
-				<source srcset={paths.webp} type="image/webp" />
-				<img 
-					src={paths.jpeg}
-					alt="Full-size screenshot" 
-					class="max-w-full max-h-[90vh] object-contain"
-				/>
-			</picture>
+			<div
+				class="relative w-full h-full flex items-center justify-center"
+				role="button"
+				tabindex="0"
+				onclick={handleModalClose}
+				onkeydown={(e) => e.key === 'Escape' && handleModalClose()}
+			>
+				<picture>
+					<source srcset={paths.webp} type="image/webp" />
+					<img 
+						src={paths.jpeg}
+						alt="Full-size screenshot" 
+						class="max-w-full max-h-[90vh] object-contain"
+					/>
+				</picture>
+			</div>
 		</div>
 	{/snippet}
 	{@render modal()}
