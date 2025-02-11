@@ -1,0 +1,613 @@
+---
+openapi: 3.1.0
+info:
+  title: WIP API
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+servers:
+- url: https://api.wip.co
+security:
+- ApiKeyQuery: []
+tags:
+- name: Todos
+  description: Operations for managing todos
+- name: Users
+  description: Operations for managing users
+- name: Projects
+  description: Operations for managing projects
+- name: Uploads
+  description: Operations for managing file uploads
+- name: Viewer
+  description: Operations for the currently authenticated user
+paths:
+  "/v1/todos":
+    post:
+      tags:
+      - Todos
+      summary: Create a completed todo
+      operationId: createTodo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                  description: The content of the todo
+                attachments:
+                  type: array
+                  items:
+                    type: string
+                  description: List of attachment signed IDs
+              required:
+              - body
+      responses:
+        '201':
+          description: Created todo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  todo:
+                    "$ref": "#/components/schemas/Todo"
+        '422':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+  "/v1/todos/{todo_id}":
+    get:
+      tags:
+      - Todos
+      summary: Return a single (completed) todo
+      operationId: getTodo
+      parameters:
+      - name: todo_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Todo ID.
+      responses:
+        '200':
+          description: A single (completed) todo
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Todo"
+        '404':
+          description: Not found
+  "/v1/users/{username}":
+    get:
+      tags:
+      - Users
+      summary: Return a single user
+      operationId: getUser
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+        description: User username.
+      responses:
+        '200':
+          description: A single user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '404':
+          description: Not found
+  "/v1/users/{username}/projects":
+    get:
+      tags:
+      - Users
+      - Projects
+      summary: Return all projects for a user
+      operationId: getUserProjects
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+        description: User username.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+        description: Number of items to return.
+      - name: starting_after
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Cursor for pagination. Fetch items starting after the item with
+          this ID.
+
+          '
+      responses:
+        '200':
+          description: A list of projects
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedProjects"
+        '404':
+          description: Not found
+  "/v1/users/{username}/todos":
+    get:
+      tags:
+      - Users
+      - Todos
+      summary: Return all (completed) todos for a user
+      operationId: getUserTodos
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+        description: User username.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+        description: Number of items to return.
+      - name: starting_after
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Cursor for pagination. Fetch items starting after the item with
+          this ID.
+
+          '
+      responses:
+        '200':
+          description: A list of (completed) todos
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedTodos"
+        '404':
+          description: Not found
+  "/v1/projects/{project_id}":
+    get:
+      tags:
+      - Projects
+      summary: Return a single project
+      operationId: getProject
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Project ID.
+      responses:
+        '200':
+          description: A single project
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Project"
+        '404':
+          description: Not found
+  "/v1/projects/{project_id}/todos":
+    get:
+      tags:
+      - Projects
+      - Todos
+      summary: Return all (completed) todos for a project
+      operationId: getProjectTodos
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Project ID.
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+        description: Number of items to return.
+      - name: starting_after
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Cursor for pagination. Fetch items starting after the item with
+          this ID.
+
+          '
+      responses:
+        '200':
+          description: A list of (completed) todos
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedTodos"
+        '404':
+          description: Not found
+  "/v1/uploads":
+    post:
+      tags:
+      - Uploads
+      summary: Request pre-signed URL for direct file upload
+      description: |
+        Get a pre-signed URL and credentials to upload a file directly to storage (R2/S3).
+
+        Steps:
+        1. Call this endpoint for upload credentials
+        2. Upload file to returned `url` with PUT request, including provided `headers`
+
+        Use returned `signed_id` to attach file to other resources.
+      operationId: createUpload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filename:
+                  type: string
+                  description: Name of the file to upload
+                byte_size:
+                  type: integer
+                  description: Size of the file in bytes
+                checksum:
+                  type: string
+                  description: MD5 checksum of the file
+                content_type:
+                  type: string
+                  description: MIME type of the file
+              required:
+              - filename
+              - byte_size
+              - checksum
+              - content_type
+      responses:
+        '200':
+          description: |
+            Upload credentials generated successfully.
+            Use this response to perform the actual file upload to storage.
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Upload"
+        '400':
+          description: Invalid input
+  "/v1/users/me":
+    get:
+      tags:
+      - Viewer
+      - Users
+      summary: Return the authenticated user's details
+      operationId: getAuthenticatedUser
+      responses:
+        '200':
+          description: The authenticated user's details
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/User"
+        '404':
+          description: Not found
+  "/v1/users/me/todos":
+    get:
+      tags:
+      - Viewer
+      - Todos
+      summary: Return all (completed) todos for the authenticated user
+      operationId: getAuthenticatedUserTodos
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+        description: Number of items to return.
+      - name: starting_after
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Cursor for pagination. Fetch items starting after the item with
+          this ID.
+
+          '
+      responses:
+        '200':
+          description: A list of (completed) todos for the authenticated user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedTodos"
+        '404':
+          description: Not found
+  "/v1/users/me/projects":
+    get:
+      tags:
+      - Viewer
+      - Projects
+      summary: Return all projects for the authenticated user
+      operationId: getAuthenticatedUserProjects
+      parameters:
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 25
+        description: Number of items to return.
+      - name: starting_after
+        in: query
+        required: false
+        schema:
+          type: string
+        description: 'Cursor for pagination. Fetch items starting after the item with
+          this ID.
+
+          '
+      responses:
+        '200':
+          description: A list of projects for the authenticated user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/PaginatedProjects"
+        '404':
+          description: Not found
+components:
+  securitySchemes:
+    ApiKeyQuery:
+      type: apiKey
+      in: query
+      name: api_key
+  schemas:
+    Todo:
+      type: object
+      required:
+      - id
+      - created_at
+      - updated_at
+      - body
+      - url
+      - attachments
+      - user_id
+      - projects
+      properties:
+        id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        body:
+          type: string
+        url:
+          type: string
+        attachments:
+          type: array
+          items:
+            type: object
+        user_id:
+          type: string
+        projects:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Project"
+    Project:
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      - pitch
+      - description
+      - created_at
+      - updated_at
+      - hashtag
+      - website_url
+      - protected
+      - archived
+      - url
+      - logo
+      - owner
+      - makers
+      properties:
+        id:
+          type: string
+        slug:
+          type:
+          - 'null'
+          - string
+        name:
+          type: string
+        pitch:
+          type:
+          - 'null'
+          - string
+        description:
+          type:
+          - 'null'
+          - string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        hashtag:
+          type:
+          - 'null'
+          - string
+        website_url:
+          type:
+          - 'null'
+          - string
+        protected:
+          type: boolean
+        archived:
+          type: boolean
+        url:
+          type: string
+        logo:
+          type: object
+          properties:
+            small:
+              type:
+              - 'null'
+              - string
+            medium:
+              type:
+              - 'null'
+              - string
+            large:
+              type:
+              - 'null'
+              - string
+        owner:
+          "$ref": "#/components/schemas/User"
+        makers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/User"
+    User:
+      type: object
+      required:
+      - id
+      - username
+      - streak
+      - created_at
+      - updated_at
+      - protected
+      - first_name
+      - last_name
+      - todos_count
+      - time_zone
+      - url
+      - avatar
+      - best_streak
+      - streaking
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        streak:
+          type: integer
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        protected:
+          type: boolean
+        first_name:
+          type:
+          - 'null'
+          - string
+        last_name:
+          type:
+          - 'null'
+          - string
+        todos_count:
+          type: integer
+        time_zone:
+          type: string
+        url:
+          type: string
+        avatar:
+          type: object
+          properties:
+            small:
+              type: string
+            medium:
+              type: string
+            large:
+              type: string
+        best_streak:
+          type: integer
+        streaking:
+          type: boolean
+    PaginatedTodos:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Todo"
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+    PaginatedProjects:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Project"
+        has_more:
+          type: boolean
+        total_count:
+          type: integer
+    Upload:
+      type: object
+      description: |
+        Contains credentials and information needed to perform a direct file upload
+        to the storage provider.
+      properties:
+        filename:
+          type: string
+          description: Original filename
+        byte_size:
+          type: integer
+          description: Size of the file in bytes
+        checksum:
+          type: string
+          description: MD5 checksum of the file
+        content_type:
+          type: string
+          description: MIME type of the file
+        url:
+          type: string
+          description: Pre-signed URL where the file should be uploaded to
+        key:
+          type: string
+          description: Storage key/path for the file
+        signed_id:
+          type: string
+          description: Token to reference this file when attaching it to other resources
+        method:
+          type: string
+          description: HTTP method to use for the upload (always "PUT")
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: Headers that must be included in the upload request

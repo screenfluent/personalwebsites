@@ -6,11 +6,28 @@ export interface Country {
 
 export interface Website {
   name: string;
-  screenshot: string;  // changed from avatar to screenshot
+  screenshot: string;
   url: string;
   country: Country;
 }
 
 export interface WebsitesData {
   websites: Website[];
+}
+
+export interface WipTodo {
+  id: string;
+  created_at: string;
+  updated_at: string;
+  body: string;
+  url: string;
+  attachments: any[];
+  user_id: string;
+  projects: any[];
+}
+
+export interface WipResponse {
+  data: WipTodo[];
+  has_more: boolean;
+  total_count: number;
 }
