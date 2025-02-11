@@ -1,4 +1,7 @@
+/// <reference types="bun-types" />
 import sharp from 'sharp';
+import { join } from "path";
+import { mkdir, readdir } from "fs/promises";
 
 const FULL_WIDTH = 1440;
 const FULL_HEIGHT = 900;
@@ -12,10 +15,10 @@ async function resizeImages() {
 
   try {
     // Create output directories
-    await Bun.write(outputDir, '');  // Create directory if it doesn't exist
-    await Bun.write(thumbnailsDir, '');  // Create directory if it doesn't exist
+    await mkdir(outputDir, { recursive: true });
+    await mkdir(thumbnailsDir, { recursive: true });
     
-    const files = await Bun.file(sourceDir).list();
+    const files = await readdir(sourceDir);
     
     for (const file of files) {
       if (file.match(/\.(jpg|jpeg|png)$/i)) {
@@ -23,7 +26,8 @@ async function resizeImages() {
         console.log(`Processing ${file}...`);
         
         // Create full-size version
-        await sharp(Bun.file(Bun.join(sourceDir, file)))
+        const sourceFile = await Bun.file(join(sourceDir, file)).arrayBuffer();
+        await sharp(sourceFile)
           .resize(FULL_WIDTH, FULL_HEIGHT, {
             fit: 'cover',
             position: 'top'
@@ -32,10 +36,10 @@ async function resizeImages() {
             quality: 85,
             mozjpeg: true
           })
-          .toFile(Bun.join(outputDir, `${baseName}.jpeg`));
+          .toFile(join(outputDir, `${baseName}.jpeg`));
 
         // Create thumbnail version
-        await sharp(Bun.file(Bun.join(sourceDir, file)))
+        await sharp(sourceFile)
           .resize(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, {
             fit: 'cover',
             position: 'top'
@@ -44,10 +48,10 @@ async function resizeImages() {
             quality: 80,  // Slightly more compressed for thumbnails
             mozjpeg: true
           })
-          .toFile(Bun.join(thumbnailsDir, `${baseName}.jpeg`));
+          .toFile(join(thumbnailsDir, `${baseName}.jpeg`));
 
-        const fullStats = await sharp(Bun.join(outputDir, `${baseName}.jpeg`)).metadata();
-        const thumbStats = await sharp(Bun.join(thumbnailsDir, `${baseName}.jpeg`)).metadata();
+        const fullStats = await sharp(join(outputDir, `${baseName}.jpeg`)).metadata();
+        const thumbStats = await sharp(join(thumbnailsDir, `${baseName}.jpeg`)).metadata();
         
         console.log(`  Full size: ${((fullStats.size || 0) / 1024).toFixed(1)}KB`);
         console.log(`  Thumbnail: ${((thumbStats.size || 0) / 1024).toFixed(1)}KB`);
