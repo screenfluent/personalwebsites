@@ -12,8 +12,9 @@ To add your website to the directory:
 
 1. Fork this repository
 2. Add your avatar image to the `static/avatars/` directory
-   - Image should be square, at least 400x400px
+   - Image should be square, no bigger than 400x400px
    - Name the file using your domain name (e.g., `example-com.jpg`)
+   - PNG or JPG formats accepted
 3. Add your website entry to `data/websites.json`
    ```json
    {
@@ -21,12 +22,16 @@ To add your website to the directory:
      "avatar": "/avatars/your-image.jpg",
      "url": "https://your-website.com",
      "country": {
-       "code": "US",
-       "flag": "🇺🇸",
-       "name": "United States"
+       "code": "PL",
+       "flag": "🇵🇱",
+       "name": "Poland"
      }
    }
    ```
+   Note: For location, you can also use:
+   - Earth: `{"code": "EARTH", "flag": "🌍", "name": "Earth"}`
+   - Digital Nomad: `{"code": "NOMAD", "flag": "🌎", "name": "Digital Nomad"}`
+
 4. Create a pull request
 
 ## Development
@@ -34,22 +39,29 @@ To add your website to the directory:
 This project uses:
 - Svelte 5
 - TypeScript
-- TailwindCSS
+- TailwindCSS 4.0
 - Cloudflare Pages
 
 ### Local Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/personalwebsites.org
-cd personalwebsites.org
+git clone https://github.com/screenfluent/personalwebsites 
+cd personalwebsites
 
 # Install dependencies
-npm install
+bun install
 
 # Start development server
-npm run dev
+bun run dev
+
+# Build for production
+bun run build
 ```
+
+## Visit
+
+[personalwebsites.org](https://personalwebsites.org)
 
 ## License
 
