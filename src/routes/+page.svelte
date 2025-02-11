@@ -150,8 +150,8 @@
 									<h2 class="font-semibold truncate">{website.name}</h2>
 									<span class="text-xl">{website.country.flag}</span>
 								</div>
-								<p class="text-sm text-gray-600 truncate">
-										{cleanUrl(website.url)}
+								<p class="text-xs text-gray-400 truncate">
+									{cleanUrl(website.url)}
 								</p>
 							</div>
 						</a>
