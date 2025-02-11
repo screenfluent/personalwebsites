@@ -8,17 +8,10 @@
 	const baseUrl = 'https://personalwebsites.org';
 	const canonicalUrl = $derived(`${baseUrl}${$page.url.pathname}`);
 
-	// The script automatically tracks page views, no manual initialization needed
 </script>
 
 <svelte:head>
 	<link rel="canonical" href={canonicalUrl} />
-	<script 
-		defer 
-		src="https://assets.onedollarstats.com/stonks.js" 
-		id="stonks"
-		data-allow-localhost="true">
-	</script>
 </svelte:head>
 
 <div class="min-h-screen flex flex-col">
