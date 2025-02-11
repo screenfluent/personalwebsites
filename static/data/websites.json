@@ -1,23 +1,33 @@
 {
   "websites": [
     {
-      "name": "nemo",
-      "screenshot": "/screenshots/nemo.foo.jpeg",
-      "url": "https://nemo.foo/",
+      "name": "Arthur",
+      "screenshot": "/screenshots/faxraddin.com.jpeg",
+      "url": "https://faxraddin.com/",
       "country": {
-        "code": "EARTH",
-        "flag": "🌍",
-        "name": "Earth"
+        "code": "ES",
+        "flag": "🇪🇸",
+        "name": "Spain"
       }
     },
     {
-      "name": "Guillaume Henry",
-      "screenshot": "/screenshots/gjphenry.be.jpeg",
-      "url": "https://gjphenry.be",
+      "name": "Christophe Ribeiro",
+      "screenshot": "/screenshots/chris.ribeiro.io.jpeg",
+      "url": "https://chris.ribeiro.io",
       "country": {
-        "code": "BE",
-        "flag": "🇧🇪",
-        "name": "Belgium"
+        "code": "FR",
+        "flag": "🇫🇷",
+        "name": "France"
+      }
+    },
+    {
+      "name": "Constantin",
+      "screenshot": "/screenshots/constantout.com.jpeg",
+      "url": "https://www.constantout.com/",
+      "country": {
+        "code": "DK",
+        "flag": "🇩🇰",
+        "name": "Denmark"
       }
     },
     {
@@ -31,9 +41,39 @@
       }
     },
     {
+      "name": "Darius Dan",
+      "screenshot": "/screenshots/dariusdan.com.jpeg",
+      "url": "https://www.dariusdan.com/",
+      "country": {
+        "code": "RO",
+        "flag": "🇷🇴",
+        "name": "Romania"
+      }
+    },
+    {
+      "name": "Guillaume Henry",
+      "screenshot": "/screenshots/gjphenry.be.jpeg",
+      "url": "https://gjphenry.be",
+      "country": {
+        "code": "BE",
+        "flag": "🇧🇪",
+        "name": "Belgium"
+      }
+    },
+    {
       "name": "Jerry Ol",
       "screenshot": "/screenshots/jerryol.fyi.jpg",
       "url": "https://www.jerryol.fyi",
+      "country": {
+        "code": "EARTH",
+        "flag": "🌍",
+        "name": "Earth"
+      }
+    },
+    {
+      "name": "nemo",
+      "screenshot": "/screenshots/nemo.foo.jpeg",
+      "url": "https://nemo.foo/",
       "country": {
         "code": "EARTH",
         "flag": "🌍",

@@ -52,13 +52,17 @@
 		}
 		selectedImage = null;
 	}
+
+	function cleanUrl(url: string) {
+		return url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '');
+	}
 </script>
 
 <div class="container mx-auto px-4">
-	<!-- Temporarily commented out
+	<!-- Temporarily commented out hero section
 	<section class="py-20 text-center">
 		<h1 class="text-4xl md:text-5xl font-bold mb-4">
-			Personal Websites
+			Personal Websites Gallery
 		</h1>
 		<p class="text-xl text-gray-600 max-w-2xl mx-auto">
 			A curated list of personal websites from around the world.
@@ -101,7 +105,7 @@
 									<span class="text-xl">{website.country.flag}</span>
 								</div>
 								<p class="text-sm text-gray-600 truncate">
-									{website.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+										{cleanUrl(website.url)}
 								</p>
 							</div>
 						</a>
@@ -120,14 +124,26 @@
 	<section class="py-16 max-w-3xl mx-auto">
 		<h2 class="text-3xl font-bold mb-6 text-center">The Story</h2>
 		<div class="prose prose-lg mx-auto">
-			<p class="mb-4">
-				This project started as a personal challenge to overcome perfectionism and train the "ship fast" muscle. 
-				Instead of getting caught up in endless refinements, I decided to launch the simplest possible version quickly.
-			</p>
-			<p>
-				Now, it's an open-source directory where anyone can add their personal website through a GitHub pull request. 
-				It's a celebration of personal websites and the individuals who create them.
-			</p>
+			<div class="text-center">
+				<p class="mb-4">
+					This project started as a personal challenge to overcome perfectionism and train the "ship fast" muscle. 
+					Instead of getting caught up in endless refinements, I decided to launch the simplest possible version quickly.
+				</p>
+				<p class="mb-8">
+					Now, it's an open-source directory where anyone can add their personal website through a GitHub pull request. 
+					It's a celebration of personal websites and the individuals who create them.
+				</p>
+				<a href="https://x.com/screenfluent" target="_blank" rel="noopener noreferrer" class="inline-block">
+					<div class="relative">
+						<img 
+							src="/szymon.png" 
+							alt="Szymon Rączka" 
+							class="w-20 h-20 rounded-full border-2 border-gray-200 mx-auto"
+						/>
+						<span class="block text-sm text-gray-600 mt-1">Szymon Rączka</span>
+					</div>
+				</a>
+			</div>
 		</div>
 	</section>
 </div>
