@@ -1,6 +1,16 @@
 {
   "websites": [
     {
+      "name": "Anthony Hagidimitriou",
+      "screenshot": "/screenshots/anthonyhagi.com.au.jpeg",
+      "url": "https://anthonyhagi.com.au/",
+      "country": {
+        "code": "AU",
+        "flag": "🇦🇺",
+        "name": "Australia"
+      }
+    },
+    {
       "name": "Arthur",
       "screenshot": "/screenshots/faxraddin.com.jpeg",
       "url": "https://faxraddin.com/",
