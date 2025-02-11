@@ -11,15 +11,15 @@ This project aims to showcase personal websites from developers, designers, and 
 To add your website to the directory:
 
 1. Fork this repository
-2. Add your avatar image to the `static/avatars/` directory
-   - Image should be square, no bigger than 400x400px
+2. Add your website screenshot to the `static/screenshots/` directory
+   - Screenshot should be 2880 × 1800 pixels
    - Name the file using your domain name (e.g., `example-com.jpg`)
    - PNG or JPG formats accepted
 3. Add your website entry to `data/websites.json`
    ```json
    {
      "name": "Your Name",
-     "avatar": "/avatars/your-image.jpg",
+     "screenshot": "/screenshots/your-domain.jpg",
      "url": "https://your-website.com",
      "country": {
        "code": "PL",

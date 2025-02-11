@@ -2,7 +2,7 @@
   "websites": [
     {
       "name": "nemo",
-      "avatar": "/avatars/nemo-foo.png",
+      "screenshot": "/screenshots/nemo.foo.jpeg",
       "url": "https://nemo.foo/",
       "country": {
         "code": "EARTH",
@@ -12,7 +12,7 @@
     },
     {
       "name": "Guillaume Henry",
-      "avatar": "/avatars/domain-name.jpg",
+      "screenshot": "/screenshots/gjphenry.be.jpg",
       "url": "https://gjphenry.be",
       "country": {
         "code": "BE",
@@ -22,7 +22,7 @@
     },
     {
       "name": "Christian Leyva",
-      "avatar": "/avatars/domain-name.jpg",
+      "screenshot": "/screenshots/vilop.com.jpg",
       "url": "https://vilop.com",
       "country": {
         "code": "US",
@@ -32,7 +32,7 @@
     },
     {
       "name": "Jerry Ol",
-      "avatar": "/avatars/domain-name.jpg",
+      "screenshot": "/screenshots/jerryol.fyi.jpg",
       "url": "https://www.jerryol.fyi",
       "country": {
         "code": "EARTH",

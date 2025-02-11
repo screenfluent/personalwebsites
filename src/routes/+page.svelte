@@ -35,11 +35,11 @@
 						rel="noopener noreferrer"
 						class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden border"
 					>
-						<div class="aspect-square overflow-hidden bg-gray-100">
+						<div class="relative pb-[62.5%] overflow-hidden bg-gray-100">
 							<img 
-								src={website.avatar} 
-								alt={`${website.name}'s avatar`}
-								class="w-full h-full object-cover"
+								src={website.screenshot} 
+								alt={`Screenshot of ${website.name}'s website`}
+								class="absolute inset-0 w-full h-full object-cover"
 							/>
 						</div>
 						<div class="p-4">

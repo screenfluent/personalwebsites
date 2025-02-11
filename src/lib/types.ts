@@ -6,7 +6,7 @@ export interface Country {
 
 export interface Website {
   name: string;
-  avatar: string;
+  screenshot: string;  // changed from avatar to screenshot
   url: string;
   country: Country;
 }
