@@ -48,7 +48,7 @@
 								<span class="text-xl">{website.country.flag}</span>
 							</div>
 							<p class="text-sm text-gray-600 truncate">
-								{website.url.replace(/^https?:\/\//, '')}
+								{website.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
 							</p>
 						</div>
 					</a>
