@@ -2,6 +2,7 @@
 	import type { WebsitesData } from '$lib/types';
 	
 	let websitesData = $state<WebsitesData | null>(null);
+	let selectedImage: string | null = $state(null);
 	
 	async function loadWebsites() {
 		const response = await fetch('/data/websites.json');
@@ -11,6 +12,11 @@
 	$effect(() => {
 		loadWebsites();
 	});
+
+	function getThumbnailPath(screenshot: string) {
+		const baseName = screenshot.split('/').pop()?.split('.')[0];
+		return `/screenshots/thumbnails/${baseName}.jpeg`;
+	}
 </script>
 
 <div class="container mx-auto px-4">
@@ -37,9 +43,14 @@
 					>
 						<div class="relative pb-[62.5%] overflow-hidden bg-gray-100">
 							<img 
-								src={website.screenshot} 
+								src={getThumbnailPath(website.screenshot)} 
 								alt={`Screenshot of ${website.name}'s website`}
 								class="absolute inset-0 w-full h-full object-cover"
+								onclick={(e) => {
+									e.preventDefault();
+									e.stopPropagation();
+									selectedImage = website.screenshot;
+								}}
 							/>
 						</div>
 						<div class="p-4">
@@ -76,3 +87,16 @@
 		</div>
 	</section>
 </div>
+
+{#if selectedImage}
+	<div 
+		class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+		onclick={() => selectedImage = null}
+	>
+		<img 
+			src={selectedImage} 
+			alt="Full-size screenshot" 
+			class="max-w-full max-h-[90vh] object-contain"
+		/>
+	</div>
+{/if}
