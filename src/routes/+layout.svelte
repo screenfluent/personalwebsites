@@ -40,7 +40,7 @@
 	<footer class="border-t mt-12">
 		<div class="container mx-auto px-4 py-8">
 			<div class="text-center text-gray-600">
-				<p>© {new Date().getFullYear()} Personal Websites Directory</p>
+				<p>© {new Date().getFullYear()} Personal Websites Gallery</p>
 				<p class="mt-2">
 					<a 
 						href="https://github.com/screenfluent/personalwebsites" 
