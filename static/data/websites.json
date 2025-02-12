@@ -119,6 +119,16 @@
         "flag": "🇬🇧",
         "name": "United Kingdom"
       }
+    },
+    {
+      "name": "Leif Latiff",
+      "screenshot": "/screenshots/grains.leifjerami.com.jpeg",
+      "url": "https://grains.leifjerami.com/",
+      "country": {
+        "code": "MY",
+        "flag": "🇲🇾",
+        "name": "Malaysia"
+      }
     }
   ]
 }
