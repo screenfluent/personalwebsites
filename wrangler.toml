@@ -2,9 +2,6 @@ name = "personalwebsites"
 compatibility_date = "2024-02-12"
 pages_build_output_dir = ".svelte-kit/cloudflare"
 
-[build]
-command = "curl -fsSL https://bun.sh/install | sh && . ~/.profile && npm install -g @sveltejs/kit && ~/.bun/bin/bun install && ~/.bun/bin/bun run build"
-
 # Production-specific configuration
 [env.production.vars]
 NODE_ENV = "production"
