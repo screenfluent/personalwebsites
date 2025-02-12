@@ -1,6 +1,6 @@
 name: Add Your Website
 description: Submit your personal website to the gallery
-title: "Add: [Your Website Name]"
+title: "Add: [Website URL]"
 labels: ["new-website"]
 body:
   - type: markdown
@@ -8,7 +8,7 @@ body:
       value: |
         # 🌟 Thanks for submitting your website!
         
-        Fill out this form and i'll add your website to the gallery. It'll only take a minute!
+        Fill out this form and I'll add your website to the gallery. It'll only take a minute!
         
   - type: input
     id: name
@@ -32,7 +32,7 @@ body:
     id: location
     attributes:
       label: Location
-      description: Where are you based? Choose 'Earth' if you prefer not to specify a country, or 'Other' if your country is not listed
+      description: Where are you based? Choose 'Earth' if you prefer not to specify a country. If your country is not listed, select 'Other' and mention your country in a comment - I'll add it to the list!
       options:
         - Earth 🌍
         - Digital Nomad 🌎
@@ -106,9 +106,9 @@ body:
         - Format: PNG or JPG
         - Full page screenshot (not just a part)
         
-        After creating the issue, simply drag and drop your screenshot here.
+        Click the "Attach files" button below to upload your screenshot.
         
         💡 Tip: You can use tools like [Cleanshot](https://cleanshot.com) or your browser's built-in screenshot tool (cmd/ctrl + shift + 4 on macOS).
-      placeholder: "Drag and drop your screenshot here after creating the issue."
+      placeholder: "Click 'Attach files' button below to upload your screenshot."
     validations:
       required: true 
