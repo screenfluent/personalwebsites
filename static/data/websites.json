@@ -89,6 +89,16 @@
         "flag": "🌍",
         "name": "Earth"
       }
+    },
+    {
+      "name": "Gosha Tcherednitchenko",
+      "screenshot": "/screenshots/gosha.net.jpeg",
+      "url": "https://gosha.net/",
+      "country": {
+        "code": "UK",
+        "flag": "🇬🇧",
+        "name": "United Kingdom"
+      }
     }
   ]
 }
