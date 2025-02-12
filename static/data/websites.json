@@ -89,6 +89,16 @@
         "flag": "🌍",
         "name": "Earth"
       }
+    },
+    {
+      "name": "Krayorn",
+      "screenshot": "/screenshots/krayorn.png",
+      "url": "https://krayorn.com",
+      "country": {
+        "code": "FR",
+        "flag": "🇫🇷",
+        "name": "France"
+      }
     }
   ]
 }
