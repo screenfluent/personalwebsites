@@ -89,6 +89,16 @@
         "flag": "🌍",
         "name": "Earth"
       }
+    },
+    {
+      "name": "Ricardo Marques",
+      "screenshot": "/screenshots/capsule.one.png",
+      "url": "https://capsule.one/",
+      "country": {
+        "code": "NL",
+        "flag": "🇳🇱",
+        "name": "Netherlands"
+      }
     }
   ]
 }
