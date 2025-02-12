@@ -1,6 +1,17 @@
 {
   "websites": [
     {
+      "name": "Philipp Parzer",
+      "screenshot": "/screenshots/philippparzer.com.webp",
+      "url": "https://philippparzer.com",
+      "country": {
+        "code": "AUSTRIA",
+        "flag": "🇦🇹",
+        "name": "Austria"
+      },
+      "added": "2025-02-12T21:47:28.224Z"
+    },
+    {
       "name": "levelsio",
       "screenshot": "/screenshots/pieter.com.webp",
       "url": "https://pieter.com/~pieter",
