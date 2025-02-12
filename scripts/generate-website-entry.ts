@@ -71,23 +71,30 @@ function addWebsiteToJson(entry: Website): void {
 
 // Funkcja do parsowania body issue
 function parseIssueBody(body: string) {
-  const lines = body.split('\n');
+  // Normalizujemy końce linii i usuwamy zbędne spacje
+  const normalizedBody = body.replace(/\\n/g, '\n').trim();
+  const sections = normalizedBody.split('###').filter(Boolean);
+  
   let name = '';
   let url = '';
   let location = '';
 
-  for (const line of lines) {
-    if (line.includes('### Your Name')) {
-      name = lines[lines.indexOf(line) + 1].trim();
+  for (const section of sections) {
+    const [title, ...contentLines] = section.trim().split('\n');
+    const content = contentLines.join('\n').trim();
+
+    if (title.includes('Your Name')) {
+      name = content;
     }
-    if (line.includes('### Website URL')) {
-      url = lines[lines.indexOf(line) + 1].trim();
+    if (title.includes('Website URL')) {
+      url = content;
     }
-    if (line.includes('### Location')) {
-      location = lines[lines.indexOf(line) + 1].trim();
+    if (title.includes('Location')) {
+      location = content;
     }
   }
 
+  console.log('Parsed data:', { name, url, location });
   return { name, url, location };
 }
 
@@ -115,7 +122,46 @@ async function getIssueData(issueNumber: string): Promise<IssueData> {
   };
 }
 
-// Funkcja do dodawania komentarza do issue
+// Main code
+async function main() {
+  const issueNumber = process.argv[2];
+  
+  if (!issueNumber) {
+    console.error('Usage: bun run add-website <issue_number> [--save] [--comment]');
+    process.exit(1);
+  }
+
+  try {
+    console.log('Fetching issue data...');
+    const issueData = await getIssueData(issueNumber);
+    const { name, url, location } = parseIssueBody(issueData.body);
+
+    if (!name || !url || !location) {
+      console.error('Could not find all required data in the issue!');
+      process.exit(1);
+    }
+
+    const entry = generateWebsiteEntry(name, url, location);
+    console.log('Generated entry:');
+    console.log(JSON.stringify(entry, null, 2));
+
+    if (process.argv.includes('--save')) {
+      addWebsiteToJson(entry);
+      console.log('Entry added to websites.json!');
+
+      // If we have a token and want to add a comment
+      if (process.env.GITHUB_TOKEN && process.argv.includes('--comment')) {
+        await addIssueComment(issueNumber, entry);
+        console.log('Added comment to the issue!');
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error.message);
+    process.exit(1);
+  }
+}
+
+// Function to add a comment to the issue
 async function addIssueComment(issueNumber: string, entry: Website): Promise<void> {
   const response = await fetch(
     `https://api.github.com/repos/screenfluent/personalwebsites/issues/${issueNumber}/comments`,
@@ -127,56 +173,17 @@ async function addIssueComment(issueNumber: string, entry: Website): Promise<voi
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        body: `✨ Strona została dodana do galerii!\n\n` +
-              `- Nazwa: ${entry.name}\n` +
+        body: `✨ Website has been added to the gallery!\n\n` +
+              `- Name: ${entry.name}\n` +
               `- URL: ${entry.url}\n` +
-              `- Kraj: ${entry.country.name} ${entry.country.flag}\n\n` +
-              `Dzięki za zgłoszenie! 🚀`
+              `- Country: ${entry.country.name} ${entry.country.flag}\n\n` +
+              `Thanks for your submission! 🚀`
       })
     }
   );
 
   if (!response.ok) {
     throw new Error(`Failed to add comment: ${response.statusText}`);
-  }
-}
-
-// Nowy główny kod
-async function main() {
-  const issueNumber = process.argv[2];
-  
-  if (!issueNumber) {
-    console.error('Użycie: bun run add-website <numer_issue> [--save] [--comment]');
-    process.exit(1);
-  }
-
-  try {
-    console.log('Pobieram dane z issue...');
-    const issueData = await getIssueData(issueNumber);
-    const { name, url, location } = parseIssueBody(issueData.body);
-
-    if (!name || !url || !location) {
-      console.error('Nie mogłem znaleźć wszystkich wymaganych danych w issue!');
-      process.exit(1);
-    }
-
-    const entry = generateWebsiteEntry(name, url, location);
-    console.log('Wygenerowany wpis:');
-    console.log(JSON.stringify(entry, null, 2));
-
-    if (process.argv.includes('--save')) {
-      addWebsiteToJson(entry);
-      console.log('Wpis dodany do websites.json!');
-
-      // Jeśli mamy token i chcemy dodać komentarz
-      if (process.env.GITHUB_TOKEN && process.argv.includes('--comment')) {
-        await addIssueComment(issueNumber, entry);
-        console.log('Dodano komentarz do issue!');
-      }
-    }
-  } catch (error) {
-    console.error('Błąd:', error.message);
-    process.exit(1);
   }
 }
 

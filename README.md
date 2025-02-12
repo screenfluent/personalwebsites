@@ -10,29 +10,17 @@ This project aims to showcase personal websites from developers, designers, and 
 
 To add your website to the directory:
 
-1. Fork this repository
-2. Add your website screenshot to the `static/screenshots/` directory
-   - Screenshot should be 1440 × 900 pixels
-   - Name the file using your domain name (e.g., `example-com.jpg`)
-   - PNG or JPG formats accepted
-3. Add your website entry to `data/websites.json`
-   ```json
-   {
-     "name": "Your Name",
-     "screenshot": "/screenshots/your-domain.jpg",
-     "url": "https://your-website.com",
-     "country": {
-       "code": "PL",
-       "flag": "🇵🇱",
-       "name": "Poland"
-     }
-   }
-   ```
-   Note: For location, you can also use:
-   - Earth: `{"code": "EARTH", "flag": "🌍", "name": "Earth"}`
-   - Digital Nomad: `{"code": "NOMAD", "flag": "🌎", "name": "Digital Nomad"}`
+1. Go to the [Issues](https://github.com/screenfluent/personalwebsites/issues) page
+2. Click "New Issue"
+3. Choose "Add Your Website" template
+4. Fill out the form:
+   - Your name
+   - Website URL
+   - Location (choose from the list or select "Other" and mention your country in a comment)
+   - Take a screenshot of your website (1440 × 900 pixels)
+5. Submit the issue
 
-4. Create a pull request
+That's it! I'll process your submission and add your website to the gallery. You'll receive a confirmation comment once it's done.
 
 ## Development
 
