@@ -141,6 +141,16 @@
         "flag": "🇬🇧",
         "name": "United Kingdom"
       }
-    }
+    },
+    {
+			"name": "Maciej Garncarski",
+			"screenshot": "/screenshots/maciej-garncarski.pl.png",
+			"url": "https://maciej-garncarski.pl",
+			"country": {
+				"code": "PL",
+				"flag": "🇵🇱",
+				"name": "Poland"
+			}
+		}
   ]
 }
