@@ -1,0 +1,35 @@
+name: Sync Commits to WIP
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  sync-to-wip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Get latest commit
+        id: get-commit
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          if [[ $COMMIT_MSG == *"[wip]"* ]]; then
+            # Remove the [wip] tag and trim whitespace
+            CLEAN_MSG=$(echo "$COMMIT_MSG" | sed 's/\[wip\]//g' | xargs)
+            echo "message=$CLEAN_MSG" >> "$GITHUB_OUTPUT"
+            echo "has_wip_tag=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_wip_tag=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create WIP Todo
+        if: steps.get-commit.outputs.has_wip_tag == 'true'
+        run: |
+          curl -X POST "https://api.wip.co/v1/todos" \
+            -H "Content-Type: application/json" \
+            -d "{\"body\": \"${{ steps.get-commit.outputs.message }}\"}" \
+            --get --data-urlencode "api_key=${{ secrets.WIP_API_KEY }}"
