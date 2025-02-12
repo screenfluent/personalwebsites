@@ -99,6 +99,26 @@
         "flag": "🇫🇷",
         "name": "France"
       }
+    },
+    {
+      "name": "Ricardo Marques",
+      "screenshot": "/screenshots/capsule.one.png",
+      "url": "https://capsule.one/",
+      "country": {
+        "code": "NL",
+        "flag": "🇳🇱",
+        "name": "Netherlands"
+      }
+    },
+    {
+      "name": "Gosha Tcherednitchenko",
+      "screenshot": "/screenshots/gosha.net.jpeg",
+      "url": "https://gosha.net/",
+      "country": {
+        "code": "UK",
+        "flag": "🇬🇧",
+        "name": "United Kingdom"
+      }
     }
   ]
 }
