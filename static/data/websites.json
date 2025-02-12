@@ -1,6 +1,17 @@
 {
   "websites": [
     {
+      "name": "Maciej Garncarski",
+      "screenshot": "/screenshots/maciej-garncarski.pl.webp",
+      "url": "https://maciej-garncarski.pl",
+      "country": {
+        "code": "POLAND",
+        "flag": "🇵🇱",
+        "name": "Poland"
+      },
+      "added": "2025-02-12T21:51:59.354Z"
+    },
+    {
       "name": "Philipp Parzer",
       "screenshot": "/screenshots/philippparzer.com.webp",
       "url": "https://philippparzer.com",
