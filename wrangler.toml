@@ -1,0 +1,16 @@
+name = "personalwebsites"
+compatibility_date = "2025-02-12"
+
+[build]
+command = "curl -fsSL https://bun.sh/install | bash && ~/.bun/bin/bun run build"
+output_directory = "build"
+
+[site]
+bucket = "./build"
+entry-point = "."
+
+[env.production]
+name = "personalwebsites-prod"
+
+[env.preview]
+name = "personalwebsites-preview" 
