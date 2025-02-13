@@ -3,6 +3,7 @@
 	
 	let websitesData = $state<WebsitesData | null>(null);
 	let selectedImage: string | null = $state(null);
+	let selectedCountry: string | null = $state(null);
 	let { data } = $props();
 	
 	async function loadWebsites() {
@@ -13,6 +14,20 @@
 	$effect(() => {
 		loadWebsites();
 	});
+
+	function getFilteredWebsites() {
+		if (!websitesData || !selectedCountry) return websitesData?.websites ?? [];
+		return websitesData.websites.filter(website => website.country.name === selectedCountry);
+	}
+
+	function getAllCountries(): Array<{ name: string; flag: string }> {
+		if (!websitesData) return [];
+		const countries = websitesData.websites.map(website => ({
+			name: website.country.name,
+			flag: website.country.flag
+		}));
+		return Array.from(new Map(countries.map(item => [item.name, item])).values());
+	}
 
 	function getImagePaths(screenshot: string) {
 		// Remove leading slash if present and file extension
@@ -102,13 +117,25 @@
 		<p class="text-xl text-gray-600 max-w-2xl mx-auto">
 			A curated gallery of personal websites around the world
 		</p>
+
+		<div class="mt-8">
+			<select
+				class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+				bind:value={selectedCountry}
+			>
+				<option value={null}>All countries</option>
+				{#each getAllCountries() as country}
+					<option value={country.name}>{country.flag} {country.name}</option>
+				{/each}
+			</select>
+		</div>
 	</section>
 
 	<!-- Grid Section -->
 	<section class="py-12">
 		{#if websitesData}
 			<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-				{#each websitesData.websites as website}
+				{#each getFilteredWebsites() as website}
 					{#snippet card()}
 						{@const paths = getImagePaths(website.screenshot)}
 						<a 
