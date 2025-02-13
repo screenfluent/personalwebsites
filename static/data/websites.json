@@ -152,6 +152,16 @@
         "flag": "🇬🇧",
         "name": "United Kingdom"
       }
-    }
+    },
+		{
+			"name": "Shubh A Chudasama",
+			"screenshot": "/screenshots/cshubh.com.png",
+			"url": "https://cshubh.com",
+			"country": {
+				"code": "IN",
+				"flag": "🇮🇳",
+				"name": "India"
+			}
+		}
   ]
 }
